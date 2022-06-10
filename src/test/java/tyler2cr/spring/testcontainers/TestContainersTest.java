@@ -18,11 +18,4 @@ public abstract class TestContainersTest {
                     .withDatabaseName("test")
                     .withExposedPorts(5432)
                     .withStartupAttempts(2);
-
-    @DynamicPropertySource
-    static void aimsPlusPlusDatabase(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", sharedPostgresDatabase::getJdbcUrl);
-        registry.add("spring.datasource.username", sharedPostgresDatabase::getUsername);
-        registry.add("spring.datasource.password", sharedPostgresDatabase::getPassword);
-    }
 }
