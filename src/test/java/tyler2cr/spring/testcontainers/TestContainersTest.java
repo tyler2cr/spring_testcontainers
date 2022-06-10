@@ -13,9 +13,16 @@ import org.testcontainers.utility.DockerImageName;
 public abstract class TestContainersTest {
 
     @Container
-    public static PostgreSQLContainer<?> sharedPostgresDatabase =
+    public static PostgreSQLContainer<?> postgresDatabase =
             new PostgreSQLContainer<>(DockerImageName.parse("postgres:11.6"))
                     .withDatabaseName("test")
                     .withExposedPorts(5432)
                     .withStartupAttempts(2);
+    
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgresDatabase::getJdbcUrl);
+        registry.add("spring.datasource.username", postgresDatabase::getUsername);
+        registry.add("spring.datasource.password", postgresDatabase::getPassword);
+    }
 }
